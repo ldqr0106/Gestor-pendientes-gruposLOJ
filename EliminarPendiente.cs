@@ -8,3 +8,60 @@ public static class EliminarPendiente
         Console.WriteLine("Función pendiente de implementar.");
     }
 }
+namespace GestorPendientes;
+
+public static class EliminarPendiente
+{
+    public static void Ejecutar(List<Pendiente> pendientes)
+    {
+        if (pendientes.Count == 0)
+        {
+            Console.WriteLine("No hay pendientes registrados para eliminar.");
+            return;
+        }
+
+        Console.WriteLine("PENDIENTES REGISTRADOS");
+
+        foreach (Pendiente pendiente in pendientes)
+        {
+            Console.WriteLine(
+                $"{pendiente.Identificador}. {pendiente.Descripcion} - {pendiente.Estado}");
+        }
+
+        Console.Write("Escribe el identificador del pendiente que deseas eliminar: ");
+        string? entrada = Console.ReadLine();
+
+        if (!int.TryParse(entrada, out int identificador))
+        {
+            Console.WriteLine("Entrada inválida. Debes escribir un número.");
+            return;
+        }
+
+        Pendiente? seleccionado = pendientes.Find(
+            p => p.Identificador == identificador);
+
+        if (seleccionado == null)
+        {
+            Console.WriteLine("No existe un pendiente con ese identificador.");
+            return;
+        }
+
+        Console.WriteLine($"Pendiente seleccionado: {seleccionado.Descripcion}");
+        Console.Write("¿Confirmas que deseas eliminarlo? (S/N): ");
+
+        string? confirmacion = Console.ReadLine();
+
+        if (string.Equals(
+            confirmacion?.Trim(),
+            "S",
+            StringComparison.OrdinalIgnoreCase))
+        {
+            pendientes.Remove(seleccionado);
+            Console.WriteLine("Pendiente eliminado correctamente.");
+        }
+        else
+        {
+            Console.WriteLine("Eliminación cancelada.");
+        }
+    }
+}
